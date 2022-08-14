@@ -1,0 +1,24 @@
+{
+
+    "TOKEN": {
+        "EXPIRATION": "48h",
+        "SECRET": "este-es-el-seed-desarrollo"
+    },
+    "INTEGRATIONS": {
+        "TAI": {
+            "URL": "https://www.taicloud.net/publicapi",
+            "APIKEY": "8fcdf43c-7e3e-8f59-96e1-3f982be0e637"
+        },
+        "HUBSPOT": {
+            "URL": "https://api.hubapi.com/crm/v3/objects",
+            "APIKEY": "pat-na1-45f5eef0-007b-4326-9d7d-a84160e806be"
+        }
+    },
+    "CERTIFICATE": {
+        "ROUTE": "/opt/bitnami/letsencrypt/certificates/",
+        "CRT": "api.prestaloan.net.crt",
+        "KEY": "api.prestaloan.net.key"
+    },
+    "PORT": 3000,
+    "PORT_HTTPS": 3001
+}
