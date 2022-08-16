@@ -2,6 +2,7 @@ require('./config/config');
 
 const bodyParser = require('body-parser');
 const express = require('express');
+const mongoose = require('mongoose');
 const morgan = require('morgan')
 const cors = require('cors')
 var path = require('path')
@@ -24,6 +25,14 @@ app.use(bodyParser.json())
 
 
 app.use(require('./routes/index'));
+
+mongoose.connect(config.DB.URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}, (err, resp) => {
+    if (err) throw err;
+    console.log('Base de datos Conectada');
+});
 
 if (process.env.NODE_ENV !== 'production') {
     app.listen(config.PORT, () => {

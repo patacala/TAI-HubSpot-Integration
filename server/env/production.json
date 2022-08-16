@@ -1,5 +1,7 @@
 {
-
+    "DB": {
+        "URI": "mongodb+srv://admin:jfCqiAAlOqMXQEsn@cluster0.fjv2s.mongodb.net/wtsIntegration?retryWrites=true&w=majority"
+    },
     "TOKEN": {
         "EXPIRATION": "48h",
         "SECRET": "este-es-el-seed-desarrollo"

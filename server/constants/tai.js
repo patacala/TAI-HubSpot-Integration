@@ -1,6 +1,6 @@
 const shipmentMapping = {
   name: "dealname",
-  shipmentId: "shipmentId",
+  shipmentId: "shipmentid",
   originZipCode: "origin_zip",
   destinationZipCode: "destination_zip",
   shipmentType: "type_of_service",
@@ -9,7 +9,7 @@ const shipmentMapping = {
   totalBuy:"total_buy",
   paymentStatus: "payment_status",
   invoiceDueDate: "invoice_due_date",
-  owner: "hubspot_owner_id",
+  owner: "salesrep_internal",
   pipeline: "pipeline"
 };
 

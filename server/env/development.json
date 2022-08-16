@@ -1,5 +1,7 @@
 {
-
+    "DB": {
+        "URI": "mongodb+srv://admin:jfCqiAAlOqMXQEsn@cluster0.fjv2s.mongodb.net/wtsIntegration?retryWrites=true&w=majority"
+    },
     "TOKEN": {
         "EXPIRATION": "48h",
         "SECRET": "este-es-el-seed-desarrollo"
@@ -20,5 +22,8 @@
         "KEY": "api.prestaloan.net.key"
     },
     "PORT": 3000,
-    "PORT_HTTPS": 3001
+    "PORT_HTTPS": 3001,
+    "APPID": "1048935",
+    "CLIENTID": "34d9f36d-65a1-44da-b5cd-da23cf1fb327",
+    "SECRETID":"3beaa6b0-3acc-440f-9ac2-93017ec6d864"
 }
