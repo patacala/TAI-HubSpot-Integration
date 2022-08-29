@@ -30,7 +30,7 @@ const contactHook = async(req, res) => {
     const body = req.body;
     // console.log(req.body)
     const payload = {
-        "authenticationKey": "8fcdf43c-7e3e-8f59-96e1-3f982be0e637",
+        "authenticationKey": config.INTEGRATIONS.TAI.APIKEY,
         "staffName": "test staff",
         "login": "test23456",
         "companyName": "test hubspot"

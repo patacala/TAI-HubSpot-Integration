@@ -20,7 +20,8 @@ const {
     associateDealAndContact,
     updateCompany,
     updateContact,
-    updateDeal
+    updateDeal,
+    deleteCompanyById
 } = require('../services/hubspot.service');
 
 const itemService = require("../services/item.service");
@@ -29,7 +30,6 @@ const shipmentManager = async(req, res) => {
     const body = req.body;
     const { customer, stops } = body;
     const shipment = body;
-    console.log("========================================================================",body)
 
     // Get organizations from TAI
     const companies = await taiService.getOrganizations();
@@ -44,9 +44,7 @@ const shipmentManager = async(req, res) => {
         await associateDealAndContact({dealId: deal.id, contactId: contact.id });
     }
 
-    return res.json({
-        ok: "sdfsdf"
-    });
+    return res.status(200).json();
 }
 
 const createOrUpdateShipment= async (shipment, stops, customer, companyId) => {
@@ -67,23 +65,25 @@ const createOrUpdateShipment= async (shipment, stops, customer, companyId) => {
 
     let deal = null;
     const isDealExists = await itemService.findById(shipment.shipmentId);
+    console.log(isDealExists)
     if (isDealExists) {
-        // const updatedShipment = await taiService.getShipmentById(shipment.shipmentId);
-        // const payloadUpdated = {
-        //     [shipmentMapping.name]: `${updatedShipment.shipmentId}`,
-        //     [shipmentMapping.shipmentId]: `${updatedShipment.shipmentId}`,
-        //     [shipmentMapping.originZipCode]: updatedShipment.stops[0].zipCode,
-        //     [shipmentMapping.destinationZipCode]: updatedShipment.stops[1].zipCode,
-        //     [shipmentMapping.shipmentType]: updatedShipment.shipmentType,
-        //     [shipmentMapping.status]: shipmentDealMapping['Paid'],
-        //     [shipmentMapping.totalSell]: updatedShipment.totalSell,
-        //     [shipmentMapping.totalBuy]: updatedShipment.totalBuy,
-        //     [shipmentMapping.owner]: getOwner(customer.staffID),
-        //     [shipmentMapping.pipeline]: pipeline.shipments,
-        //     // [shipmentMapping.paymentStatus]: "payment_status",
-        //     // [shipmentMapping.invoiceDueDate]: "invoice_due_date",
-        // }
-        contact = await updateDeal(dealPayload, isDealExists.hsId);
+        const updatedShipment = await taiService.getShipmentById(shipment.shipmentId);
+        const payloadUpdated = {
+            [shipmentMapping.name]: `${updatedShipment.shipmentId}`,
+            'shipment_id': `${updatedShipment.shipmentId}`,
+            [shipmentMapping.originZipCode]: updatedShipment.stops[0].zipCode,
+            [shipmentMapping.destinationZipCode]: updatedShipment.stops[1].zipCode,
+            [shipmentMapping.shipmentType]: updatedShipment.shipmentType,
+            [shipmentMapping.status]: shipmentDealMapping[updatedShipment.status],
+            [shipmentMapping.totalSell]: updatedShipment.totalSell,
+            [shipmentMapping.totalBuy]: updatedShipment.totalBuy,
+            // [shipmentMapping.owner]: getOwner(customer.staffID),
+            [shipmentMapping.pipeline]: pipeline.shipments,
+            // [shipmentMapping.paymentStatus]: "payment_status",
+            // [shipmentMapping.invoiceDueDate]: "invoice_due_date",
+        }
+        console.log({updatedShipment})
+        contact = await updateDeal(payloadUpdated, isDealExists.hsId);
     } else {
         try {
             
@@ -114,8 +114,13 @@ const createOrUpdateContact = async (customer, myCompany, companyId) => {
     } else {
         contact = await createContact(contactPayload);
         if(contact) {
-            await associateContactAndCompany({contactId: contact.id, companyId });
-            await itemService.createItem('contact', contact.id, customer.staffID)
+            try {
+                await associateContactAndCompany({contactId: contact.id, companyId });
+                await itemService.createItem('contact', contact.id, customer.staffID)
+            } catch (error) {
+                // Contact already exist in db 
+                await deleteContact(contact.id)
+            }
         }
     }
     return contact;
@@ -143,7 +148,14 @@ const createOrUpdateCompany = async (customer, myCompany) => {
         company = await updateCompany(companyPayload, isCompanyExists.hsId);
     } else {
         company = await createCompany(companyPayload);
-        if(company) await itemService.createItem('company', company.id, customer.billToOrganizationId)
+        if(company) {
+            try {
+                await itemService.createItem('company', company.id, customer.billToOrganizationId)
+            } catch (error) {
+                // Company already exist in db 
+                await deleteCompanyById(company.id)
+            }
+        }
         
     }
     return company;

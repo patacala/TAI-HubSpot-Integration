@@ -5,7 +5,7 @@ const createItem = async(type, hsId, taiId) => {
 }
 
 const findById = async(id) => {
-  return await items.findOne({ $or: [{ taiId: id }, { hsId: id }] })
+  return await items.findOne({ taiId: id })
 }
 
 module.exports = {

@@ -1,5 +1,5 @@
 const config = require('../config/config')
-const { get, post, put, patch} = require('../services/http.service');
+const { get, post, put, patch, delete_a } = require('../services/http.service');
 
 // CONTACT
 const createContact = async (payload) => {
@@ -22,6 +22,11 @@ const updateContact = async (payload, contactId) => {
   return await patch(url, {properties: payload}, {}, `Bearer ${config.INTEGRATIONS.HUBSPOT.APIKEY}`);
 }
 
+const deleteContactById = async(contactId) => {
+  const url = `${config.INTEGRATIONS.HUBSPOT.URL}/contacts/${contactId}`;
+  return await delete_a(url, {}, {}, `Bearer ${config.INTEGRATIONS.HUBSPOT.APIKEY}`);
+}
+
 
 // COMPANY
 const createCompany = async (payload) => {
@@ -37,6 +42,11 @@ const updateCompany = async (payload, companyId) => {
 const getCompanyById = async(companyId) => {
   const url = `${config.INTEGRATIONS.HUBSPOT.URL}/companies/${companyId}?archived=false`;
   return await get(url, {}, {}, `Bearer ${config.INTEGRATIONS.HUBSPOT.APIKEY}`);
+}
+
+const deleteCompanyById = async(companyId) => {
+  const url = `${config.INTEGRATIONS.HUBSPOT.URL}/companies/${companyId}`;
+  return await delete_a(url, {}, {}, `Bearer ${config.INTEGRATIONS.HUBSPOT.APIKEY}`);
 }
 
 
@@ -81,7 +91,8 @@ module.exports = {
   associateDealAndContact,
   getCompanyById,
   getContactById,
-  getDealById
+  getDealById,
+  deleteCompanyById
 }
 
 
