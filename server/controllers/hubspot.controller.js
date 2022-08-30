@@ -1,5 +1,4 @@
 const { messageError, generarJWT } = require('../helpers/jwt');
-const bcrypt = require('bcrypt');
 const taiService = require('../services/tai.service')
 const {
     contactMapping, 
@@ -37,12 +36,15 @@ const shipmentManager = async(req, res) => {
 
     // Create and asociate elements en hubspot
     const company = await createOrUpdateCompany(customer, myCompany);
-    const contact = await createOrUpdateContact(customer, myCompany, company.id);
-    const deal = await createOrUpdateShipment(shipment, stops, customer, company.id);
-    
-    if(deal) {
-        await associateDealAndContact({dealId: deal.id, contactId: contact.id });
+    if(company) {
+        const contact = await createOrUpdateContact(customer, myCompany, company.id);
+        const deal = await createOrUpdateShipment(shipment, stops, customer, company.id);
+
+        if(deal) {
+            await associateDealAndContact({dealId: deal.id, contactId: contact.id });
+        }
     }
+    
 
     return res.status(200).json();
 }
@@ -65,7 +67,7 @@ const createOrUpdateShipment= async (shipment, stops, customer, companyId) => {
 
     let deal = null;
     const isDealExists = await itemService.findById(shipment.shipmentId);
-    console.log(isDealExists)
+    // console.log(isDealExists)
     if (isDealExists) {
         const updatedShipment = await taiService.getShipmentById(shipment.shipmentId);
         const payloadUpdated = {
@@ -82,7 +84,7 @@ const createOrUpdateShipment= async (shipment, stops, customer, companyId) => {
             // [shipmentMapping.paymentStatus]: "payment_status",
             // [shipmentMapping.invoiceDueDate]: "invoice_due_date",
         }
-        console.log({updatedShipment})
+        // console.log({updatedShipment})
         contact = await updateDeal(payloadUpdated, isDealExists.hsId);
     } else {
         try {
@@ -137,6 +139,7 @@ const createOrUpdateCompany = async (customer, myCompany) => {
         [companyMapping.state]: myCompany.state,
         [companyMapping.zipCode]: myCompany.zipCode,
         [companyMapping.country]: myCompany.country,
+        'tms_companyid': customer.billToOrganizationId
         // [companyMapping.creditLimit]: customer.staffID,
         // [companyMapping.totalDue]: customer.staffID,
         // [companyMapping.totalPasDue]: customer.staffID,
@@ -147,16 +150,15 @@ const createOrUpdateCompany = async (customer, myCompany) => {
     if (isCompanyExists) {
         company = await updateCompany(companyPayload, isCompanyExists.hsId);
     } else {
-        company = await createCompany(companyPayload);
-        if(company) {
-            try {
-                await itemService.createItem('company', company.id, customer.billToOrganizationId)
-            } catch (error) {
-                // Company already exist in db 
-                await deleteCompanyById(company.id)
-            }
+        try {
+            company = await createCompany(companyPayload);
+            if(company) {
+                    await itemService.createItem('company', company.id, customer.billToOrganizationId)
+            }       
+        } catch (error) {
+            // Company already exist in db 
+            console.log(error, '+++++++++++++++++++++++++++++++++++++++++++++++++++++');
         }
-        
     }
     return company;
 }

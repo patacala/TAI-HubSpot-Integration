@@ -8,7 +8,12 @@ const findById = async(id) => {
   return await items.findOne({ taiId: id })
 }
 
+const findByHsId = async(id) => {
+  return await items.findOne({ hsId: id })
+}
+
 module.exports = {
   createItem,
-  findById
+  findById,
+  findByHsId
 }

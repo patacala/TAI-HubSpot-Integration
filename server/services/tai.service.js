@@ -13,7 +13,7 @@ const getShipmentById = async (shipmentId) => {
   return await get(url, {}, {'x-api-key': config.INTEGRATIONS.TAI.APIKEY});
 }
 
-const createContant = async (payload) => {
+const createContact = async (payload) => {
   const url = `${config.INTEGRATIONS.TAI.URL}/customer/customerStaffCreation}`;
   return await put(url, payload);
 }
@@ -27,6 +27,6 @@ const createCompany = async (payload) => {
 module.exports = {
   getOrganizations,
   getShipmentById,
-  createContant,
+  createContact,
   createCompany
 }
