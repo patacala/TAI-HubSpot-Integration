@@ -23,6 +23,7 @@ const shipmentDealMapping = {
   Dispatched: 21136804,
   InTransit: 21136805,
   Delivered: 21136806,
+  Complete: 32273483,
   Paid: 22267996,
   Canceled: 21136807
 };
