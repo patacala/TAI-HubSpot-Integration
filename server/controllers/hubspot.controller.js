@@ -1,4 +1,3 @@
-const { messageError, generarJWT } = require('../helpers/jwt');
 const taiService = require('../services/tai.service')
 const {
     contactMapping, 

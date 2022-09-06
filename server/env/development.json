@@ -16,14 +16,5 @@
             "APIKEY": "pat-na1-45f5eef0-007b-4326-9d7d-a84160e806be"
         }
     },
-    "CERTIFICATE": {
-        "ROUTE": "/opt/bitnami/letsencrypt/certificates/",
-        "CRT": "api.prestaloan.net.crt",
-        "KEY": "api.prestaloan.net.key"
-    },
-    "PORT": 3000,
-    "PORT_HTTPS": 3001,
-    "APPID": "1048935",
-    "CLIENTID": "34d9f36d-65a1-44da-b5cd-da23cf1fb327",
-    "SECRETID":"3beaa6b0-3acc-440f-9ac2-93017ec6d864"
+    "PORT": 3000
 }

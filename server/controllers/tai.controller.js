@@ -1,32 +1,8 @@
-const { messageError, generarJWT } = require('../helpers/jwt');
 const config = require('../config/config')
-const bcrypt = require('bcrypt');
 const taiService = require('../services/tai.service')
 const ItemService = require('../services/item.service')
-const {
-    contactMapping, 
-    companyMapping, 
-    mockShipments, 
-    managersMapping, 
-    shipmentDealMapping, 
-    shipmentMapping, 
-    pipeline
-} = require("../constants/tai");
-
-const { 
-    createContact, 
-    createCompany, 
-    associateContactAndCompany, 
-    createDeal, 
-    associateDealAndCompany,
-    associateDealAndContact,
-    updateCompany,
-    updateContact,
-    updateDeal
-} = require('../services/hubspot.service');
 
 const contactHook = async(req, res) => {
-    console.log(req.body, 'Contacttttttttttttttttttttttt')
     try {
         
         const contact = req.body
@@ -49,7 +25,6 @@ const contactHook = async(req, res) => {
 }
 
 const companyHook = async(req, res) => {
-    // console.log(req.body, 'companyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy')
     try {
         const company = req.body;
         const payload = {

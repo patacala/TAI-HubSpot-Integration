@@ -34,19 +34,6 @@ mongoose.connect(config.DB.URI, {
     console.log('Base de datos Conectada');
 });
 
-if (process.env.NODE_ENV !== 'production') {
-    app.listen(config.PORT, () => {
-        console.log('Escuchando en el port:', process.env.PORT || config.PORT);
-    });
-} else {
-    https.createServer({
-        cert: fs.readFileSync(config.CERTIFICATE.ROUTE + config.CERTIFICATE.CRT),
-        key: fs.readFileSync(config.CERTIFICATE.ROUTE + config.CERTIFICATE.KEY)
-    }, app).listen(config.PORT_HTTPS, () => {
-        console.log('Servidor https correindo en el port ', config.PORT_HTTPS);
-    });
-
-    http.createServer(app).listen(config.PORT, () => {
-        console.log('Servidor http correindo en el port ', config.PORT);
-    });
-}
+app.listen(config.PORT, () => {
+    console.log('Escuchando en el port:', process.env.PORT || config.PORT);
+});
