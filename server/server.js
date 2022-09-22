@@ -34,6 +34,8 @@ mongoose.connect(config.DB.URI, {
     console.log('Base de datos Conectada');
 });
 
+process.on('uncaughtException', console.log)
+
 app.listen(config.PORT, () => {
     console.log('Escuchando en el port:', process.env.PORT || config.PORT);
 });
