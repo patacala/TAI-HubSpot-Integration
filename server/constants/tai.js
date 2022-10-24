@@ -1,6 +1,6 @@
 const shipmentMapping = {
   name: "dealname",
-  shipmentId: "shipmentid",
+  shipmentId: "shipment_id",
   originZipCode: "origin_zip",
   destinationZipCode: "destination_zip",
   shipmentType: "type_of_service",
@@ -10,7 +10,9 @@ const shipmentMapping = {
   paymentStatus: "payment_status",
   invoiceDueDate: "invoice_due_date",
   owner: "salesrep_internal",
-  pipeline: "pipeline"
+  pipeline: "pipeline",
+  estimatedPickUpDate: "estimated_pickup_date",
+  actualPickUpDate: "actual_pickup_date"
 };
 
 const pipeline = {

@@ -49,6 +49,8 @@ const shipmentManager = async(req, res) => {
 }
 
 const createOrUpdateShipment= async (shipment, stops, customer, companyId) => {
+    const estimatedPickUpDate = shipment.stops[0].estimatedReadyDateTime ? shipment.stops[0].estimatedReadyDateTime.split('T')[0] : '';
+    const actualPickUpDate = shipment.stops[0].actualArrivalDateTime ? shipment.stops[0].actualArrivalDateTime.split('T')[0] : '';
     try {
         
         const dealPayload = {
@@ -59,11 +61,10 @@ const createOrUpdateShipment= async (shipment, stops, customer, companyId) => {
             [shipmentMapping.status]: shipmentDealMapping[shipment.status],
             [shipmentMapping.totalSell]: shipment.totalSell,
             [shipmentMapping.totalBuy]:shipment.totalBuy,
-            [shipmentMapping.owner]: shipment.customer.salesRepNames || '',
             [shipmentMapping.pipeline]: pipeline.shipments,
-            "shipment_id":`${shipment.shipmentId}`
-            // [shipmentMapping.paymentStatus]: "payment_status",
-            // [shipmentMapping.invoiceDueDate]: "invoice_due_date",
+            [shipmentMapping.shipmentId]:`${shipment.shipmentId}`,
+            [shipmentMapping.estimatedPickUpDate]: estimatedPickUpDate,
+            [shipmentMapping.actualPickUpDate]: actualPickUpDate,
         }
     
         let deal = null;
@@ -73,17 +74,16 @@ const createOrUpdateShipment= async (shipment, stops, customer, companyId) => {
             const updatedShipment = await taiService.getShipmentById(shipment.shipmentId);
             const payloadUpdated = {
                 [shipmentMapping.name]: `${updatedShipment.shipmentId}`,
-                'shipment_id': `${updatedShipment.shipmentId}`,
+                [shipmentMapping.shipmentId]: `${updatedShipment.shipmentId}`,
                 [shipmentMapping.originZipCode]: updatedShipment.stops[0].zipCode,
                 [shipmentMapping.destinationZipCode]: updatedShipment.stops[1].zipCode,
                 [shipmentMapping.shipmentType]: updatedShipment.shipmentType,
                 [shipmentMapping.status]: shipmentDealMapping[updatedShipment.status],
                 [shipmentMapping.totalSell]: updatedShipment.totalSell,
                 [shipmentMapping.totalBuy]: updatedShipment.totalBuy,
-                // [shipmentMapping.owner]: getOwner(customer.staffID),
                 [shipmentMapping.pipeline]: pipeline.shipments,
-                // [shipmentMapping.paymentStatus]: "payment_status",
-                // [shipmentMapping.invoiceDueDate]: "invoice_due_date",
+                [shipmentMapping.estimatedPickUpDate]: estimatedPickUpDate,
+                [shipmentMapping.actualPickUpDate]: actualPickUpDate,
             }
             // console.log({updatedShipment})
             contact = await updateDeal(payloadUpdated, isDealExists.hsId);
