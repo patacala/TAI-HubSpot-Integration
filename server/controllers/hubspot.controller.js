@@ -66,7 +66,7 @@ const createOrUpdateShipment= async (shipment, stops, customer, companyId) => {
             [shipmentMapping.estimatedPickUpDate]: estimatedPickUpDate,
             [shipmentMapping.actualPickUpDate]: actualPickUpDate,
         }
-    
+        console.log(dealPayload)
         let deal = null;
         const isDealExists = await itemService.findById(shipment.shipmentId);
         // console.log(isDealExists)
@@ -86,13 +86,13 @@ const createOrUpdateShipment= async (shipment, stops, customer, companyId) => {
                 [shipmentMapping.actualPickUpDate]: actualPickUpDate,
             }
             // console.log({updatedShipment})
-            contact = await updateDeal(payloadUpdated, isDealExists.hsId);
+            // contact = await updateDeal(payloadUpdated, isDealExists.hsId);
         } else {            
-            deal = await createDeal(dealPayload);
-            if(deal) {
-                await itemService.createItem('deal', deal.id, shipment.shipmentId)
-                await associateDealAndCompany({dealId: deal.id, companyId });
-            }
+            // deal = await createDeal(dealPayload);
+            // if(deal) {
+            //     await itemService.createItem('deal', deal.id, shipment.shipmentId)
+            //     await associateDealAndCompany({dealId: deal.id, companyId });
+            // }
         }
     
         return deal;
