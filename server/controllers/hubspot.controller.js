@@ -68,6 +68,7 @@ const createOrUpdateShipment= async (shipment, stops, customer, companyId) => {
             [shipmentMapping.totalBuy]:shipment.totalBuy,
             [shipmentMapping.pipeline]: pipeline.shipments,
             [shipmentMapping.shipmentId]:`${shipment.shipmentId}`,
+            [shipmentMapping.owner]: shipment.customer.salesRepNames || '',
             ...estimatedPickUpDate,
             ...actualPickUpDate,
         }
@@ -86,6 +87,7 @@ const createOrUpdateShipment= async (shipment, stops, customer, companyId) => {
                 [shipmentMapping.totalSell]: updatedShipment.totalSell,
                 [shipmentMapping.totalBuy]: updatedShipment.totalBuy,
                 [shipmentMapping.pipeline]: pipeline.shipments,
+                [shipmentMapping.owner]: shipment.customer.salesRepNames || '',
                 ...estimatedPickUpDate,
                 ...actualPickUpDate,
             }
