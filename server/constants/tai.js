@@ -23,7 +23,7 @@ const pipeline = {
 const shipmentDealMapping = {
   Quoted: 21136803,
   Dispatched: 21136804,
-  InTransit: 21136805,
+  "In Transit": 21136805,
   Delivered: 21136806,
   Complete: 32273483,
   Paid: 22267996,
