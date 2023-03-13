@@ -8,7 +8,7 @@
     },
     "INTEGRATIONS": {
         "TAI": {
-            "URL": "https://www.taicloud.net/publicapi",
+            "URL": "https://atl.taicloud.net/PublicApi",
             "APIKEY": "8fcdf43c-7e3e-8f59-96e1-3f982be0e637"
         },
         "HUBSPOT": {
