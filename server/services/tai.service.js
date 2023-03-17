@@ -9,7 +9,6 @@ const getOrganizations = async () => {
 
 const getShipmentById = async (shipmentId) => {
   const url = `${config.INTEGRATIONS.TAI.URL}/Shipping/v2/Shipments/${shipmentId}`;
-  console.log({url})
   return await get(url, {}, {'x-api-key': config.INTEGRATIONS.TAI.APIKEY});
 }
 

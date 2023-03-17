@@ -32,7 +32,7 @@ const shipmentManager = async(req, res) => {
     // Get organizations from TAI
     const companies = await taiService.getOrganizations();
     const myCompany = companies.find(c => c.companyName == customer.name);
-
+    
     // Create and asociate elements en hubspot
     const company = await createOrUpdateCompany(customer, myCompany);
     if(company) {
@@ -49,12 +49,21 @@ const shipmentManager = async(req, res) => {
 }
 
 const createOrUpdateShipment= async (shipment, stops, customer, companyId) => {
+    const getShipmentReferenceNumbers = (referenceType) => shipment.shipmentReferenceNumbers.find(ship => ship.referenceType === referenceType);
     const estimatedPickUpDate = shipment.stops[0].estimatedReadyDateTime ? 
         { [shipmentMapping.estimatedPickUpDate]: new Date(shipment.stops[0].estimatedReadyDateTime.split('T')[0]).getTime() } : 
         {};
     const actualPickUpDate = shipment.stops[0].actualArrivalDateTime ? 
         { [shipmentMapping.actualPickUpDate]: new Date(shipment.stops[0].actualArrivalDateTime.split('T')[0]).getTime() } : 
         {};
+
+    const existReferenceNumber = getShipmentReferenceNumbers('Custom Reference Number') 
+    const customReferenceNumber = existReferenceNumber ? 
+        { [shipmentMapping.customReferenceNumber] : existReferenceNumber.value } : {};
+    
+    const existReferenceNumber2 = getShipmentReferenceNumbers('Custom Reference Number 2') 
+    const customReferenceNumber2 = existReferenceNumber2 ? 
+        { [shipmentMapping.customReferenceNumber2] : existReferenceNumber2.value} : {};
 
     try {
         
@@ -69,6 +78,8 @@ const createOrUpdateShipment= async (shipment, stops, customer, companyId) => {
             [shipmentMapping.pipeline]: pipeline.shipments,
             [shipmentMapping.shipmentId]:`${shipment.shipmentId}`,
             [shipmentMapping.owner]: shipment.customer.salesRepNames || '',
+            ...customReferenceNumber,
+            ...customReferenceNumber2,
             ...estimatedPickUpDate,
             ...actualPickUpDate,
         }
@@ -88,6 +99,8 @@ const createOrUpdateShipment= async (shipment, stops, customer, companyId) => {
                 [shipmentMapping.totalBuy]: updatedShipment.totalBuy,
                 [shipmentMapping.pipeline]: pipeline.shipments,
                 [shipmentMapping.owner]: shipment.customer.salesRepNames || '',
+                ...customReferenceNumber,
+                ...customReferenceNumber2,
                 ...estimatedPickUpDate,
                 ...actualPickUpDate,
             }

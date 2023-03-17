@@ -8,8 +8,6 @@ const cors = require('cors')
 var path = require('path')
 const fs = require('fs')
 const config = require('./config/config')
-const https = require('https')
-const http = require('http')
 
 
 const app = express()

@@ -12,7 +12,9 @@ const shipmentMapping = {
   owner: "salesrep_internal",
   pipeline: "pipeline",
   estimatedPickUpDate: "estimated_pickup_date",
-  actualPickUpDate: "actual_pickup_date"
+  actualPickUpDate: "actual_pickup_date",
+  customReferenceNumber: 'operator',
+  customReferenceNumber2: 'customer_service_rep'
 };
 
 const pipeline = {
@@ -22,8 +24,14 @@ const pipeline = {
 
 const shipmentDealMapping = {
   Quoted: 21136803,
+  Quote: 21136803,
+  Booked: 62364771,
+  Committed: 62364771,
+  Ready: 62364772,
+  Sent: 62364773,
   Dispatched: 21136804,
   "In Transit": 21136805,
+  "Out for Delivery": 62364774,
   Delivered: 21136806,
   Complete: 32273483,
   Paid: 22267996,
@@ -72,26 +80,50 @@ const managersMapping = [
 
 const mockShipments =
 {
-  "shipmentId": 114003382,
-  "latitude": 39.321412,
-  "longitude": -93.227982,
-  "mileage": 786.33,
+  "shipmentId": 115365409,
+  "latitude": 42.212202,
+  "longitude": -88.167149,
+  "lastLocationUpdate": "2023-03-06T08:00:00Z",
+  "mileage": 1431.25,
   "customer": {
-    "name": "WTS Demo",
-    "referenceNumber": "",
-    "staffID": 150302,
-    "staffName": "World Transportation Demo",
+    "name": "Hitex Marketing Group",
+    "referenceNumber": null,
+    "staffID": 529415,
+    "staffName": "Jackie Rusca",
     "staffReferenceNumber": null,
-    "salesRepNames": "",
-    "billToOrganizationId": 96763,
+    "salesRepNames": "Sindy Guerrero",
+    "billToOrganizationId": 185694,
     "officeOrganizationId": 96498,
     "officeName": "World Transportation Services (TSM)"
   },
-  "totalBuy": 500,
-  "totalSell": 1200,
-  "status": "Quoted",
-  "carrierList": [],
-  "attachments": null,
+  "totalBuy": 519.41,
+  "totalSell": 586.93,
+  "status": "Dispatched",
+  "carrierList": [
+    {
+      "name": "ABF FREIGHT SYSTEM, INC.",
+      "scac": "ABFS",
+      "dotNumber": "82866",
+      "mcNumber": "029910",
+      "trackingURL": "https://www.abfs.com/tools/trace/default.asp?hidsubmitted=y&refno0=WWW3936351",
+      "city": "FORT SMITH",
+      "state": "AR",
+      "zipCode": "72903",
+      "phoneNumber": "+18007556486",
+      "tariffName": "BL - World Transportation Services (TSM) - ABFS",
+      "transitType": "Linehaul",
+      "status": "Dispatched",
+      "buy": 519.41,
+      "sell": 586.93
+    }
+  ],
+  "attachments": [
+    {
+      "attachmentUrl": "https://wts.taicloud.net/Files/Attachments?i=23065172&t=0",
+      "attachmentType": "Document",
+      "documentId": 23065172
+    }
+  ],
   "shipmentType": "LTL",
   "stackable": false,
   "trailerType": "Van",
@@ -101,8 +133,28 @@ const mockShipments =
   "serviceLevel": "Normal",
   "shipmentReferenceNumbers": [
     {
-      "referenceType": "Shipment Id",
-      "value": "114003382"
+      "referenceType": "Shipper Reference Number",
+      "value": "PO# 19151-1"
+    },
+    {
+      "referenceType": "Customer PO Number",
+      "value": "PO# 19151-1"
+    },
+    {
+      "referenceType": "API Quote Number",
+      "value": "LYSBWD0653"
+    },
+    {
+      "referenceType": "Linehaul Carrier Pro Number",
+      "value": "WWW3936351"
+    },
+    {
+      "referenceType": "Custom Reference Number",
+      "value": "Jessica"
+    },
+    {
+      "referenceType": "Custom Reference Number 2",
+      "value": "Axel"
     },
     {
       "referenceType": "Customer Confirmation",
@@ -111,27 +163,35 @@ const mockShipments =
     {
       "referenceType": "Carrier Confirmation",
       "value": "False"
+    },
+    {
+      "referenceType": "Linehaul",
+      "value": "WWW3936351"
+    },
+    {
+      "referenceType": "Shipment Id",
+      "value": "115365409"
     }
   ],
   "stops": [
     {
-      "companyName": null,
-      "streetAddress": null,
+      "companyName": "Howw Manufacturing",
+      "streetAddress": "28W020 Commercial Ave",
       "streetAddressTwo": null,
-      "city": "MIAMI",
-      "state": "MO",
-      "zipCode": "65344",
+      "city": "BARRINGTON",
+      "state": "IL",
+      "zipCode": "60010",
       "country": "USA",
-      "contactName": null,
-      "phone": null,
+      "contactName": "Lisa Stehno",
+      "phone": "+18002234699",
       "fax": null,
-      "email": null,
+      "email": "lisa@howw.com",
       "instructions": null,
       "notes": null,
       "airportOrTerminalCode": null,
       "referenceNumber": null,
-      "estimatedReadyDateTime": "2022-08-03T08:00:00-06:00",
-      "estimatedCloseDateTime": "2022-08-03T16:00:00-06:00",
+      "estimatedReadyDateTime": "2023-03-07T08:00:00-06:00",
+      "estimatedCloseDateTime": "2023-03-07T16:30:00-06:00",
       "appointmentReadyDateTime": null,
       "appointmentCloseDateTime": null,
       "actualArrivalDateTime": null,
@@ -139,23 +199,23 @@ const mockShipments =
       "stopType": "First Pickup"
     },
     {
-      "companyName": null,
-      "streetAddress": null,
+      "companyName": "Hitex Marketing Group, Inc",
+      "streetAddress": "1566 NW 108th Avenue",
       "streetAddressTwo": null,
-      "city": "ORLANDO",
-      "state": "WV",
-      "zipCode": "26412",
+      "city": "MIAMI",
+      "state": "FL",
+      "zipCode": "33172",
       "country": "USA",
-      "contactName": null,
-      "phone": null,
-      "fax": null,
-      "email": null,
+      "contactName": "Jackie Rusca",
+      "phone": "+13054061150x228",
+      "fax": "+13054061139",
+      "email": "jrusca@hitexmarketing.com",
       "instructions": null,
       "notes": null,
       "airportOrTerminalCode": null,
       "referenceNumber": null,
-      "estimatedReadyDateTime": null,
-      "estimatedCloseDateTime": null,
+      "estimatedReadyDateTime": "2023-03-10T08:00:00-05:00",
+      "estimatedCloseDateTime": "2023-03-10T16:00:00-05:00",
       "appointmentReadyDateTime": null,
       "appointmentCloseDateTime": null,
       "actualArrivalDateTime": null,
@@ -167,15 +227,36 @@ const mockShipments =
     {
       "handlingQuantity": 1,
       "packagingType": "Pallet",
-      "length": null,
-      "width": null,
-      "height": null,
-      "weightTotal": 200,
+      "length": 40.0,
+      "width": 50.0,
+      "height": 45.0,
+      "weightTotal": 183.0,
       "hazardousMaterial": false,
       "piecesTotal": 1,
-      "freightClass": "50",
-      "nmfc": null,
-      "description": "first shipment",
+      "freightClass": "250",
+      "nmfc": "",
+      "description": "Plastic Pitchers",
+      "additionalMarkings": null,
+      "unNumber": null,
+      "packingGroup": null,
+      "referenceNumber": null,
+      "hazmatCustomClassDescription": null,
+      "hazmatPieceDescription": null,
+      "harmonizedCode": null,
+      "hazardClasses": []
+    },
+    {
+      "handlingQuantity": 1,
+      "packagingType": "Pallet",
+      "length": 40.0,
+      "width": 50.0,
+      "height": 66.0,
+      "weightTotal": 305.0,
+      "hazardousMaterial": false,
+      "piecesTotal": 1,
+      "freightClass": "250",
+      "nmfc": "",
+      "description": "Plastic Pitchers",
       "additionalMarkings": null,
       "unNumber": null,
       "packingGroup": null,
